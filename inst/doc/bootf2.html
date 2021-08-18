@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+<meta name="author" content="Zhengguo XU" />
+
+<meta name="date" content="2021-08-17" />
+
+<title>Confidence Intervals of f_2 Using Bootstrap Method</title>
+
+<script src="data:application/javascript;base64,Ly8gUGFuZG9jIDIuOSBhZGRzIGF0dHJpYnV0ZXMgb24gYm90aCBoZWFkZXIgYW5kIGRpdi4gV2UgcmVtb3ZlIHRoZSBmb3JtZXIgKHRvCi8vIGJlIGNvbXBhdGlibGUgd2l0aCB0aGUgYmVoYXZpb3Igb2YgUGFuZG9jIDwgMi44KS4KZG9jdW1lbnQuYWRkRXZlbnRMaXN0ZW5lcignRE9NQ29udGVudExvYWRlZCcsIGZ1bmN0aW9uKGUpIHsKICB2YXIgaHMgPSBkb2N1bWVudC5xdWVyeVNlbGVjdG9yQWxsKCJkaXYuc2VjdGlvbltjbGFzcyo9J2xldmVsJ10gPiA6Zmlyc3QtY2hpbGQiKTsKICB2YXIgaSwgaCwgYTsKICBmb3IgKGkgPSAwOyBpIDwgaHMubGVuZ3RoOyBpKyspIHsKICAgIGggPSBoc1tpXTsKICAgIGlmICghL15oWzEtNl0kL2kudGVzdChoLnRhZ05hbWUpKSBjb250aW51ZTsgIC8vIGl0IHNob3VsZCBiZSBhIGhlYWRlciBoMS1oNgogICAgYSA9IGguYXR0cmlidXRlczsKICAgIHdoaWxlIChhLmxlbmd0aCA+IDApIGgucmVtb3ZlQXR0cmlidXRlKGFbMF0ubmFtZSk7CiAgfQp9KTsK"></script>
+
+<style type="text/css">
+  code{white-space: pre-wrap;}
+  span.smallcaps{font-variant: small-caps;}
+  span.underline{text-decoration: underline;}
+  div.column{display: inline-block; vertical-align: top; width: 50%;}
+  div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+  ul.task-list{list-style: none;}
+    </style>
+
+
+<style type="text/css">
+  code {
+    white-space: pre;
+  }
+  .sourceCode {
+    overflow: visible;
+  }
+</style>
+<style type="text/css" data-origin="pandoc">
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    for (var j = 0; j < rules.length; j++) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") continue;
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') continue;
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+
+
+<style type="text/css">
+/* for pandoc --citeproc since 2.11 */
+div.csl-bib-body { }
+div.csl-entry {
+  clear: both;
+}
+.hanging div.csl-entry {
+  margin-left:2em;
+  text-indent:-2em;
+}
+div.csl-left-margin {
+  min-width:2em;
+  float:left;
+}
+div.csl-right-inline {
+  margin-left:2em;
+  padding-left:1em;
+}
+div.csl-indent {
+  margin-left: 2em;
+}
+</style>
+
+<link rel="stylesheet" href="data:text/css,body%20%7B%0Abackground%2Dcolor%3A%20%23fff%3B%0Amargin%3A%201em%20auto%3B%0Amax%2Dwidth%3A%20700px%3B%0Aoverflow%3A%20visible%3B%0Apadding%2Dleft%3A%202em%3B%0Apadding%2Dright%3A%202em%3B%0Afont%2Dfamily%3A%20%22Open%20Sans%22%2C%20%22Helvetica%20Neue%22%2C%20Helvetica%2C%20Arial%2C%20sans%2Dserif%3B%0Afont%2Dsize%3A%2014px%3B%0Aline%2Dheight%3A%201%2E35%3B%0A%7D%0A%23TOC%20%7B%0Aclear%3A%20both%3B%0Amargin%3A%200%200%2010px%2010px%3B%0Apadding%3A%204px%3B%0Awidth%3A%20400px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Aborder%2Dradius%3A%205px%3B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Afont%2Dsize%3A%2013px%3B%0Aline%2Dheight%3A%201%2E3%3B%0A%7D%0A%23TOC%20%2Etoctitle%20%7B%0Afont%2Dweight%3A%20bold%3B%0Afont%2Dsize%3A%2015px%3B%0Amargin%2Dleft%3A%205px%3B%0A%7D%0A%23TOC%20ul%20%7B%0Apadding%2Dleft%3A%2040px%3B%0Amargin%2Dleft%3A%20%2D1%2E5em%3B%0Amargin%2Dtop%3A%205px%3B%0Amargin%2Dbottom%3A%205px%3B%0A%7D%0A%23TOC%20ul%20ul%20%7B%0Amargin%2Dleft%3A%20%2D2em%3B%0A%7D%0A%23TOC%20li%20%7B%0Aline%2Dheight%3A%2016px%3B%0A%7D%0Atable%20%7B%0Amargin%3A%201em%20auto%3B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dcolor%3A%20%23DDDDDD%3B%0Aborder%2Dstyle%3A%20outset%3B%0Aborder%2Dcollapse%3A%20collapse%3B%0A%7D%0Atable%20th%20%7B%0Aborder%2Dwidth%3A%202px%3B%0Apadding%3A%205px%3B%0Aborder%2Dstyle%3A%20inset%3B%0A%7D%0Atable%20td%20%7B%0Aborder%2Dwidth%3A%201px%3B%0Aborder%2Dstyle%3A%20inset%3B%0Aline%2Dheight%3A%2018px%3B%0Apadding%3A%205px%205px%3B%0A%7D%0Atable%2C%20table%20th%2C%20table%20td%20%7B%0Aborder%2Dleft%2Dstyle%3A%20none%3B%0Aborder%2Dright%2Dstyle%3A%20none%3B%0A%7D%0Atable%20thead%2C%20table%20tr%2Eeven%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Ap%20%7B%0Amargin%3A%200%2E5em%200%3B%0A%7D%0Ablockquote%20%7B%0Abackground%2Dcolor%3A%20%23f6f6f6%3B%0Apadding%3A%200%2E25em%200%2E75em%3B%0A%7D%0Ahr%20%7B%0Aborder%2Dstyle%3A%20solid%3B%0Aborder%3A%20none%3B%0Aborder%2Dtop%3A%201px%20solid%20%23777%3B%0Amargin%3A%2028px%200%3B%0A%7D%0Adl%20%7B%0Amargin%2Dleft%3A%200%3B%0A%7D%0Adl%20dd%20%7B%0Amargin%2Dbottom%3A%2013px%3B%0Amargin%2Dleft%3A%2013px%3B%0A%7D%0Adl%20dt%20%7B%0Afont%2Dweight%3A%20bold%3B%0A%7D%0Aul%20%7B%0Amargin%2Dtop%3A%200%3B%0A%7D%0Aul%20li%20%7B%0Alist%2Dstyle%3A%20circle%20outside%3B%0A%7D%0Aul%20ul%20%7B%0Amargin%2Dbottom%3A%200%3B%0A%7D%0Apre%2C%20code%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0Aborder%2Dradius%3A%203px%3B%0Acolor%3A%20%23333%3B%0Awhite%2Dspace%3A%20pre%2Dwrap%3B%20%0A%7D%0Apre%20%7B%0Aborder%2Dradius%3A%203px%3B%0Amargin%3A%205px%200px%2010px%200px%3B%0Apadding%3A%2010px%3B%0A%7D%0Apre%3Anot%28%5Bclass%5D%29%20%7B%0Abackground%2Dcolor%3A%20%23f7f7f7%3B%0A%7D%0Acode%20%7B%0Afont%2Dfamily%3A%20Consolas%2C%20Monaco%2C%20%27Courier%20New%27%2C%20monospace%3B%0Afont%2Dsize%3A%2085%25%3B%0A%7D%0Ap%20%3E%20code%2C%20li%20%3E%20code%20%7B%0Apadding%3A%202px%200px%3B%0A%7D%0Adiv%2Efigure%20%7B%0Atext%2Dalign%3A%20center%3B%0A%7D%0Aimg%20%7B%0Abackground%2Dcolor%3A%20%23FFFFFF%3B%0Apadding%3A%202px%3B%0Aborder%3A%201px%20solid%20%23DDDDDD%3B%0Aborder%2Dradius%3A%203px%3B%0Aborder%3A%201px%20solid%20%23CCCCCC%3B%0Amargin%3A%200%205px%3B%0A%7D%0Ah1%20%7B%0Amargin%2Dtop%3A%200%3B%0Afont%2Dsize%3A%2035px%3B%0Aline%2Dheight%3A%2040px%3B%0A%7D%0Ah2%20%7B%0Aborder%2Dbottom%3A%204px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Apadding%2Dbottom%3A%202px%3B%0Afont%2Dsize%3A%20145%25%3B%0A%7D%0Ah3%20%7B%0Aborder%2Dbottom%3A%202px%20solid%20%23f7f7f7%3B%0Apadding%2Dtop%3A%2010px%3B%0Afont%2Dsize%3A%20120%25%3B%0A%7D%0Ah4%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23f7f7f7%3B%0Amargin%2Dleft%3A%208px%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Ah5%2C%20h6%20%7B%0Aborder%2Dbottom%3A%201px%20solid%20%23ccc%3B%0Afont%2Dsize%3A%20105%25%3B%0A%7D%0Aa%20%7B%0Acolor%3A%20%230033dd%3B%0Atext%2Ddecoration%3A%20none%3B%0A%7D%0Aa%3Ahover%20%7B%0Acolor%3A%20%236666ff%3B%20%7D%0Aa%3Avisited%20%7B%0Acolor%3A%20%23800080%3B%20%7D%0Aa%3Avisited%3Ahover%20%7B%0Acolor%3A%20%23BB00BB%3B%20%7D%0Aa%5Bhref%5E%3D%22http%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0Aa%5Bhref%5E%3D%22https%3A%22%5D%20%7B%0Atext%2Ddecoration%3A%20underline%3B%20%7D%0A%0Acode%20%3E%20span%2Ekw%20%7B%20color%3A%20%23555%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Edt%20%7B%20color%3A%20%23902000%3B%20%7D%20%0Acode%20%3E%20span%2Edv%20%7B%20color%3A%20%2340a070%3B%20%7D%20%0Acode%20%3E%20span%2Ebn%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Efl%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Ech%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Est%20%7B%20color%3A%20%23d14%3B%20%7D%20%0Acode%20%3E%20span%2Eco%20%7B%20color%3A%20%23888888%3B%20font%2Dstyle%3A%20italic%3B%20%7D%20%0Acode%20%3E%20span%2Eot%20%7B%20color%3A%20%23007020%3B%20%7D%20%0Acode%20%3E%20span%2Eal%20%7B%20color%3A%20%23ff0000%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Efu%20%7B%20color%3A%20%23900%3B%20font%2Dweight%3A%20bold%3B%20%7D%20%0Acode%20%3E%20span%2Eer%20%7B%20color%3A%20%23a61717%3B%20background%2Dcolor%3A%20%23e3d2d2%3B%20%7D%20%0A" type="text/css" />
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">Confidence Intervals of <span class="math inline">\(f_2\)</span> Using Bootstrap Method</h1>
+<h4 class="author">Zhengguo XU</h4>
+<h4 class="date">2021-08-17</h4>
+
+
+
+<div id="introduction" class="section level2">
+<h2>Introduction</h2>
+<p>To compare the dissolution profiles, the most widely used method is the similarity factor <span class="math inline">\(f_2\)</span>, which is usually defined in the regulatory guideline as <span class="math display">\[f_2 = 50 \log\frac{100}{\sqrt{1 + \frac{\sum_{t=1}^{t=n}\left(\bar{R}_t-\bar{T}_t\right)^2}{n}}},\]</span> where <span class="math inline">\(\bar{R}_t\)</span> and <span class="math inline">\(\bar{T}_t\)</span> are mean dissolution profile of reference ad test product at time <span class="math inline">\(t\)</span>; <span class="math inline">\(n\)</span> is the number of time points.</p>
+<p>Nevertheless, there are several prerequisites for the use of f2 method according to the regulatory guidelines, such as no more than one time point above 85% dissolved should be used and the variability, expressed as coefficient of variation (CV), should be no more than 20% and 10% for early and later time points, respectively. See vignette <em>Introduction to bootf2</em> for details.</p>
+<p>Recently, several guidelines recommended the use of confidence interval of <span class="math inline">\(f_2\)</span> approach using bootstrap when the traditional <span class="math inline">\(f_2\)</span> method cannot be applied<span class="citation"><sup><a href="#ref-EMA-2018-09-QA.MSD.DISSO" role="doc-biblioref">1</a>–<a href="#ref-Mandula-2019-05-WS" role="doc-biblioref">4</a></sup></span>. However, none of the guidelines specified in details which estimators or types of confidence intervals should be used. Therefore, the function <code>bootf2()</code> will output various confidence intervals by default for several <span class="math inline">\(f_2\)</span> estimators.</p>
+<div id="types-of-f_2" class="section level3">
+<h3>Types of <span class="math inline">\(f_2\)</span></h3>
+<p>According to Shah et al, the population <span class="math inline">\(f_2\)</span> for the inference is <span class="math display">\[
+f_2 = 100-25\log\left(1 + \frac{1}{P}\sum_{i=1}^P
+  \left(\mu_{\mathrm{T},i} - \mu_{\mathrm{R},i}\right)^2 \right)\, ,
+\]</span> where <span class="math inline">\(P\)</span> is the number of time points; <span class="math inline">\(\mu_{\mathrm{T},i}\)</span> and <span class="math inline">\(\mu_{\mathrm{R},i}\)</span>, typically unknown, are population mean of test and reference product at time point <span class="math inline">\(i\)</span>, respectively<span class="citation"><sup><a href="#ref-Shah-1998-06-PR" role="doc-biblioref">5</a></sup></span>. Several estimators for the population <span class="math inline">\(f_2\)</span> has been described in the literature<span class="citation"><sup><a href="#ref-Shah-1998-06-PR" role="doc-biblioref">5</a>–<a href="#ref-Mendyk-2019" role="doc-biblioref">8</a></sup></span>. The function is able to calculate the following five estimators for <span class="math inline">\(f_2\)</span>, along with their corresponding 90% confidence intervals using bootstrap.</p>
+<div id="the-estimated-f_2-hatf_2" class="section level4">
+<h4>The estimated <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_2\)</span>)</h4>
+<p>The estimated <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_2\)</span>, denoted by <code>est.f2</code> in the function) is the one written in various regulatory guidelines. It is expressed differently, but mathematically equivalently, as <span class="math display">\[
+\hat{f}_2 = 100-25\log\left(1 + \frac{1}{P}\sum_{i=1}^P\left(
+  \bar{X}_{\mathrm{T},i} - \bar{X}_{\mathrm{R},i}\right)^2 \right)\:,
+\]</span> where <span class="math inline">\(P\)</span> is the number of time points; <span class="math inline">\(\bar{X}_{\mathrm{T},i}\)</span> and <span class="math inline">\(\bar{X}_{\mathrm{R},i}\)</span> are mean dissolution data at the <span class="math inline">\(i\)</span>th time point of <em>random samples</em> chosen from the test and the reference population, respectively. Compared to the equation of population <span class="math inline">\(f_2\)</span> above, the only difference is that in the equation of <span class="math inline">\(\hat{f}_2\)</span> the <em>sample means</em> of dissolution profiles replace the <em>population means</em> for the approximation. <em>In other words, a point estimate is used for the statistical inference in practice.</em></p>
+</div>
+<div id="the-bias-corrected-f_2-hatf_2mathrmbc" class="section level4">
+<h4>The Bias-corrected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2,\mathrm{bc}}\)</span>)</h4>
+<p>Bias-corrected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2,\mathrm{bc}}\)</span>, denoted by <code>bc.f2</code> in the function) was described in the article of Shah et al<span class="citation"><sup><a href="#ref-Shah-1998-06-PR" role="doc-biblioref">5</a></sup></span>, as <span class="math display">\[
+\hat{f}_{2,\mathrm{bc}} = 100-25\log\left(1 + \frac{1}{P}
+  \left(\sum_{i=1}^P\left(\bar{X}_{\mathrm{T},i} - 
+    \bar{X}_{\mathrm{R},i}\right)^2 - \frac{1}{n}\sum_{i=1}^P
+    \left(S_{\mathrm{T},i}^2 + S_{\mathrm{R},i}^2\right)\right)\right)\,,
+\]</span> where <span class="math inline">\(S_{\mathrm{T},i}^2\)</span> and <span class="math inline">\(S_{\mathrm{R},i}^2\)</span> are unbiased estimates of variance at the <span class="math inline">\(i\)</span>th time points of random samples chosen from test and reference population, respectively; and <span class="math inline">\(n\)</span> is the sample size. <span class="math inline">\(\bar{X}_{\mathrm{T},i}\)</span>, <span class="math inline">\(\bar{X}_{\mathrm{R},i}\)</span> and <span class="math inline">\(P\)</span> are same as described previously. As domain of the <span class="math inline">\(\log(\cdot)\)</span> function needs to be positive, when variance is sufficiently high, i.e., when inequality <span class="math display">\[\frac{1}{n}\sum_{i=1}^P\left(S_{\mathrm{T},i}^2 + S_{\mathrm{R},i}^2\right)\ge
+\sum_{i=1}^P \left(\bar{X}_{\mathrm{T},i}-\bar{X}_{\mathrm{R},i}\right)^2+P\]</span> is valid, <span class="math inline">\(\hat{f}_{2,\mathrm{bc}}\)</span> cannot be calculated.</p>
+</div>
+<div id="the-variance--and-bias-corrected-f_2-hatf_2-mathrmvcbc" class="section level4">
+<h4>The variance- and bias-corrected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2, \mathrm{vcbc}}\)</span>)</h4>
+<p>Bias-corrected <span class="math inline">\(f_2\)</span> described earlier assumes equal weight of variance between test and reference, which might not necessarily be true, therefore, the function also includes the following variance- and bias-corrected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2, \mathrm{vcbc}}\)</span>, denoted by <code>vc.bc.f2</code> in the function) <span class="math display">\[
+\hat{f}_{2, \mathrm{vcbc}} = 100-25\log\left(1 +
+  \frac{1}{P}\left(\sum_{i=1}^P \left(\bar{X}_{\mathrm{T},i} -
+  \bar{X}_{\mathrm{R},i}\right)^2 -
+  \frac{1}{n}\sum_{i=1}^P\left(w_{\mathrm{T},i}\cdot S_{\mathrm{T},i}^2 +
+  w_{\mathrm{R},i}\cdot S_{\mathrm{R},i}^2\right)\right)\right)\,,
+\]</span> where <span class="math inline">\(w_{\mathrm{T},i}\)</span> and <span class="math inline">\(w_{\mathrm{R},i}\)</span> are weighting factors for variance of test and reference products, respectively, which can be calculated as follows: <span class="math display">\[
+w_{\mathrm{T},i} = 0.5 + \frac{S_{\mathrm{T},i}^2}
+  {S_{\mathrm{T},i}^2 + S_{\mathrm{R},i}^2}\,,
+\]</span> and <span class="math display">\[
+w_{\mathrm{R},i} = 0.5 + \frac{S_{\mathrm{R},i}^2}
+  {S_{\mathrm{T},i}^2 + S_{\mathrm{R},i}^2}\,.
+\]</span> Similar to <span class="math inline">\(\hat{f}_{2, \mathrm{bc}}\)</span>, the <span class="math inline">\(\hat{f}_{2, \mathrm{vcbc}}\)</span> cannot be estimated when the variance is sufficiently high, i.e., when the inequality <span class="math display">\[
+\frac{1}{n}\sum_{i=1}^P  \left(w_{\mathrm{T},i}\cdot S_{\mathrm{T},i}^2 +  w_{\mathrm{R},i}\cdot S_{\mathrm{R},i}^2\right) \ge \sum_{i=1}^P  \left(\bar{X}_{\mathrm{T},i}-\bar{X}_{\mathrm{R},i}\right)^2+P
+\]</span> is valid.</p>
+</div>
+<div id="the-expected-f_2-hatf_2-mathrmexp" class="section level4">
+<h4>The expected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2, \mathrm{exp}}\)</span>)</h4>
+<p>The mathematical expectation of <span class="math inline">\(\hat{f}_2\)</span> is <span class="math display">\[\begin{align}\label{eq:mathexp}
+  \mathbb{E}\left(\hat{f}_2\right) &amp;= \mathbb{E}\left(100 - 25\log\left(1 +
+    \frac{1}{P} \sum_{i=1}^P\left(\bar{X}_{\mathrm{T},i} -
+      \bar{X}_{\mathrm{R},i}\right)^2 \right)\right)\notag\\
+     &amp;\approx 100 - 25\log\left(1 + \mathbb{E}\left(\frac{1}{P} \sum_{i=1}^P
+      \left(\bar{X}_{\mathrm{T},i} -
+        \bar{X}_{\mathrm{R},i}\right)^2\right)\right) \notag\\
+    &amp;= 100 - 25\log\left(1 + \frac{1}{P}
+    \left(\sum_{i=1}^P\left(\mu_{\mathrm{T},i} - \mu_{\mathrm{R},i}\right)^2
+      + \frac{1}{n}\sum_{i=1}^P \left(\sigma_{\mathrm{T},i}^2 +
+         \sigma_{\mathrm{R},i}^2\right)\right)\right),
+\end{align}\]</span> where <span class="math inline">\(\sigma_{\mathrm{T},i}^2\)</span> and <span class="math inline">\(\sigma_{\mathrm{R},i}^2\)</span> are <em>population variance</em> of the test and the reference product, respectively.</p>
+<p>The expected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2, \mathrm{exp}}\)</span>, denoted by <code>exp.f2</code> in the function) is calculated based on the mathematical expectation of <span class="math inline">\(\hat{f}_2\)</span>, using mean dissolution profiles and variance from samples for the approximation<span class="citation"><sup><a href="#ref-Ma-2000-05-JBS" role="doc-biblioref">6</a>–<a href="#ref-Mendyk-2019" role="doc-biblioref">8</a></sup></span>. <span class="math display">\[
+\hat{f}_{2, \mathrm{exp}} = 100-25\log\left(1 + \frac{1}{P}\left(\sum_{i=1}^P
+  \left(\bar{X}_{\mathrm{T},i} - \bar{X}_{\mathrm{R},i}\right)^2 +
+  \frac{1}{n}\sum_{i=1}^P\left(S_{\mathrm{T},i}^2 +
+  S_{\mathrm{R},i}^2\right)\right)\right)\,.
+\]</span></p>
+</div>
+<div id="the-variance-corrected-expected-f_2-hatf_2-mathrmvcexp" class="section level4">
+<h4>The variance-corrected expected <span class="math inline">\(f_2\)</span> (<span class="math inline">\(\hat{f}_{2, \mathrm{vcexp}}\)</span>))</h4>
+<p>Similarly, since <span class="math inline">\(\hat{f}_{2, \mathrm{exp}}\)</span> assumes equal weight of variance between test and reference, the variance-corrected version (<span class="math inline">\(\hat{f}_{2, \mathrm{vcexp}}\)</span>, denoted by <code>vc.exp.f2</code> in the function) was also included in the function. <span class="math display">\[
+\hat{f}_{2, \mathrm{vcexp}} = 100-25\log\left(1 + \frac{1}{P}\left(\sum_{i=1}^P
+  \left(\bar{X}_{\mathrm{T},i} - \bar{X}_{\mathrm{R},i}\right)^2 +
+  \frac{1}{n}\sum_{i=1}^P\left(w_{\mathrm{T},i}\cdot S_{\mathrm{T},i}^2 +
+  w_{\mathrm{R},i}\cdot S_{\mathrm{R},i}^2\right)\right)\right)\,.
+\]</span></p>
+</div>
+</div>
+<div id="types-of-confidence-intervals" class="section level3">
+<h3>Types of confidence intervals</h3>
+<p>The following 90% confidence intervals are included in the function:</p>
+<div id="the-normal-interval" class="section level4">
+<h4>The Normal interval</h4>
+<p>The Normal interval (denoted by <code>normal</code> in the function) with bias correction was estimated according to Davison and Hinkley<span class="citation"><sup><a href="#ref-Davison-1997-Bootstrap" role="doc-biblioref">9</a></sup></span>, <span class="math display">\[\begin{align}
+  \hat{f}_{2, \mathrm{L}} &amp;= \hat{f}_{2, \mathrm{S}} -
+    E_B - \sqrt{V_B}\cdot Z_{1-\alpha}\,, \\
+  \hat{f}_{2, \mathrm{U}} &amp;= \hat{f}_{2, \mathrm{S}} -
+    E_B + \sqrt{V_B}\cdot Z_{1-\alpha}\,,
+\end{align}\]</span> where <span class="math inline">\(\hat{f}_{2, \mathrm{L}}\)</span> and <span class="math inline">\(\hat{f}_{2, \mathrm{U}}\)</span> are the lower and upper limit of the confidence interval estimated from bootstrap samples; <span class="math inline">\(\hat{f}_{2, \mathrm{S}}\)</span> denotes the estimators as described in Section <a href="#types-of-f_2">Types of <span class="math inline">\(f_2\)</span></a> and calculated using the <em>randomly selected samples from populations</em>; <span class="math inline">\(Z_{1-\alpha}\)</span> is <span class="math inline">\(\Phi^{-1}(1-\alpha)\)</span>, where <span class="math inline">\(\Phi(\cdot)\)</span> represents standard normal cumulative distribution function and <span class="math inline">\(\Phi^{-1}(\cdot)\)</span> denotes its inverse, the quantile function; <span class="math inline">\(\alpha\)</span> is the type I error rate and equal to 0.05 in the current study; <span class="math inline">\(E_B\)</span> and <span class="math inline">\(V_B\)</span> are the <em>resampling estimates</em> of bias and variance calculated as <span class="math display">\[\begin{align}
+  E_B &amp;= \frac{1}{B}\sum_{b=1}^{B}\hat{f}_{2,b}^\star - \hat{f}_{2, \mathrm{S}}
+    = \bar{f}_2^\star - \hat{f}_{2, \mathrm{S}}\label{eq:eb}\,, \\
+  V_B &amp;= \frac{1}{B-1}\sum_{b=1}^{B}
+    \left(\hat{f}_{2,b}^\star-\bar{f}_2^\star\right)^2\label{eq:vb}\,,
+\end{align}\]</span> where superscript <span class="math inline">\(^\star\)</span> denotes that the <span class="math inline">\(f_2\)</span> estimates are calculated from <em>bootstrap samples</em>; <span class="math inline">\(B\)</span> is the number of bootstrap samples, which is equal to 10000 in the function as default value; <span class="math inline">\(\hat{f}_{2,b}^\star\)</span> is the <span class="math inline">\(f_2\)</span> estimate with the <span class="math inline">\(b\)</span>th bootstrap sample and <span class="math inline">\(\bar{f}_2^\star\)</span> is the mean value.</p>
+</div>
+<div id="the-basic-interval" class="section level4">
+<h4>The basic interval</h4>
+<p>The basic interval (denoted by <code>basic</code> in the function) was calculated according to Davison and Hinkley<span class="citation"><sup><a href="#ref-Davison-1997-Bootstrap" role="doc-biblioref">9</a></sup></span>, <span class="math display">\[\begin{align}
+  \hat{f}_{2, \mathrm{L}} &amp;= 2\hat{f}_{2, \mathrm{S}} -
+    \hat{f}_{2,(B+1)(1-\alpha)}^\star\,, \\
+  \hat{f}_{2, \mathrm{U}} &amp;= 2\hat{f}_{2, \mathrm{S}} -
+    \hat{f}_{2,(B+1)\alpha}^\star\,,
+\end{align}\]</span> where <span class="math inline">\(\hat{f}_{2,(B+1)\alpha}^\star\)</span> and <span class="math inline">\(\hat{f}_{2,(B+1)(1-\alpha)}^\star\)</span> are the <span class="math inline">\((B+1)\alpha\)</span>th and the <span class="math inline">\((B+1)(1-\alpha)\)</span>th <em>ordered resampling estimates</em> of <span class="math inline">\(f_2\)</span>, respectively. When <span class="math inline">\((B+1)\alpha\)</span> is not an integer, the following equation is used for interpolation, <span class="math display">\[
+  \hat{f}_{2,(B+1)\alpha}^\star = \hat{f}_{2,k}^\star 
+  + \frac{\Phi^{-1}\left(\alpha\right)-\Phi^{-1}\left(\frac{k}{B+1}\right)}
+  {\Phi^{-1}\left(\frac{k+1}{B+1}\right)-\Phi^{-1}\left(\frac{k}{B+1}\right)}
+  \left(\hat{f}_{2,k+1}^\star-\hat{f}_{2,k}^\star\right),
+\]</span> where <span class="math inline">\(k = \left[(B+1)\alpha\right]\)</span>, the <em>integer part</em> of <span class="math inline">\((B+1)\alpha\)</span>, <span class="math inline">\(\hat{f}_{2,k+1}^\star\)</span> and <span class="math inline">\(\hat{f}_{2,k}^\star\)</span> are the <span class="math inline">\((k+1)\)</span>th and the <span class="math inline">\(k\)</span>th ordered resampling estimates of <span class="math inline">\(f_2\)</span>, respectively.</p>
+</div>
+<div id="the-percentile-interval" class="section level4">
+<h4>The percentile interval</h4>
+<p>The percentile intervals (denoted by <code>percentile</code> in the function) were estimated using nine different types of quantiles, percentile Type 1 to Type 9, as summarized in Hyndman and Fan’s article<span class="citation"><sup><a href="#ref-Hyndman-1996-AS" role="doc-biblioref">10</a></sup></span> and implemented in <code>R</code>’s <code>quantile</code> function. Using <code>R</code>’s <code>boot</code> package, program <code>bootf2BCA</code> outputs a percentile interval using the equation above for interpolation. To be able to compare the results among different programs, the same interval, denoted by <code>Percentile (boot)</code> in the function, is also calculated in this study.</p>
+</div>
+<div id="the-bca-intervals" class="section level4">
+<h4>The BCa intervals</h4>
+<p>The bias-corrected and accelerated intervals were estimated as follows according to literature<span class="citation"><sup><a href="#ref-Efron1993AIttB" role="doc-biblioref">11</a></sup></span>, <span class="math display">\[\begin{align}
+  \hat{f}_{2, \mathrm{L}} &amp;= \hat{f}_{2, \alpha_1}^\star\,,\\
+  \hat{f}_{2, \mathrm{U}} &amp;= \hat{f}_{2, \alpha_2}^\star\,,
+\end{align}\]</span> where <span class="math inline">\(\hat{f}_{2, \alpha_1}^\star\)</span> and <span class="math inline">\(\hat{f}_{2, \alpha_2}^\star\)</span> are the <span class="math inline">\(100\alpha_1\)</span>th and the <span class="math inline">\(100\alpha_2\)</span>th percentile of the resampling estimates of <span class="math inline">\(f_2\)</span>, respectively. Type I errors <span class="math inline">\(\alpha_1\)</span> and <span class="math inline">\(\alpha_2\)</span> were obtained as <span class="math display">\[\begin{align}
+  \alpha_1 &amp;= \Phi\left(\hat{z}_0 + \frac{\hat{z}_0 + \hat{z}_\alpha}
+    {1-\hat{a}\left(\hat{z}_0 + \hat{z}_\alpha\right)}\right), \\
+  \alpha_2 &amp;= \Phi\left(\hat{z}_0 + \frac{\hat{z}_0 + \hat{z}_{1-\alpha}}
+    {1-\hat{a}\left(\hat{z}_0 + \hat{z}_{1-\alpha}\right)}\right),
+\end{align}\]</span> where <span class="math inline">\(\hat{z}_0\)</span> and <span class="math inline">\(\hat{a}\)</span> are called <em>bias-correction</em> and <em>acceleration</em>, respectively.</p>
+<p>There are different methods to estimate the <span class="math inline">\(\hat{z}_0\)</span> and <span class="math inline">\(\hat{a}\)</span>. Shah et al.<span class="citation"><sup><a href="#ref-Shah-1998-06-PR" role="doc-biblioref">5</a></sup></span> used jackknife technique (denoted by <code>bca.jackknife</code>) as <span class="math display">\[\begin{equation}\label{eq:z0}
+  \hat{z}_0 = \Phi^{-1}\left(\frac{\#\left\{\hat{f}_{2,b}^\star &lt;
+    \hat{f}_{2,\mathrm{S}} \right\}}{B}\right),
+\end{equation}\]</span> and <span class="math display">\[\begin{equation}\label{eq:a0}
+  \hat{a} = \frac{\sum_{i=1}^{n}\left(\hat{f}_{2,\mathrm{m}} -
+    \hat{f}_{2, i}\right)^3}{6\left(\sum_{i=1}^{n}
+    \left(\hat{f}_{2,\mathrm{m}} - \hat{f}_{2, i}\right)^2\right)^{3/2}}\,,
+\end{equation}\]</span> where <span class="math inline">\(\#\left\{\cdot\right\}\)</span> denotes the number of element in the set, <span class="math inline">\(\hat{f}_{2, i}\)</span> is the <span class="math inline">\(i\)</span>th jackknife statistic, <span class="math inline">\(\hat{f}_{2,\mathrm{m}}\)</span> is the mean of the jackknife statistics, and <span class="math inline">\(n\)</span> is the sample size.</p>
+<p>Program <code>bootf2BCA</code> gives a slightly different BCa interval with <code>R</code>’s <code>boot</code> package<span class="citation"><sup><a href="#ref-Mendyk-2019" role="doc-biblioref">8</a></sup></span>. This approach, denoted by <code>bca.boot</code> in the function, was also implemented in the function <code>bootf2</code> for estimating the interval.</p>
+</div>
+</div>
+</div>
+<div id="usage" class="section level2">
+<h2>Usage</h2>
+<p>The complete list of arguments of the function is as follows:</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">bootf2</span>(test, ref, path.in, file.in, path.out, file.out,</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>       <span class="at">n.boots =</span> 10000L, <span class="at">seed =</span> <span class="dv">306</span>, <span class="at">digits =</span> 2L, <span class="at">alpha =</span> <span class="fl">0.05</span>,</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">regulation =</span> <span class="fu">c</span>(<span class="st">&quot;EMA&quot;</span>, <span class="st">&quot;FDA&quot;</span>, <span class="st">&quot;WHO&quot;</span>), <span class="at">min.points =</span> 1L,</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>       <span class="at">both.TR.85 =</span> <span class="cn">FALSE</span>, <span class="at">print.report =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">report.style =</span> <span class="fu">c</span>(<span class="st">&quot;concise&quot;</span>, <span class="st">&quot;intermediate&quot;</span>, <span class="st">&quot;detailed&quot;</span>),</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">f2.type =</span> <span class="fu">c</span>(<span class="st">&quot;all&quot;</span>, <span class="st">&quot;est.f2&quot;</span>, <span class="st">&quot;exp.f2&quot;</span>, <span class="st">&quot;bc.f2&quot;</span>,</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;vc.exp.f2&quot;</span>, <span class="st">&quot;vc.bc.f2&quot;</span>),</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">ci.type =</span> <span class="fu">c</span>(<span class="st">&quot;all&quot;</span>, <span class="st">&quot;normal&quot;</span>, <span class="st">&quot;basic&quot;</span>, <span class="st">&quot;percentile&quot;</span>,</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a>                   <span class="st">&quot;bca.jackknife&quot;</span>, <span class="st">&quot;bca.boot&quot;</span>),</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">quantile.type =</span> <span class="fu">c</span>(<span class="st">&quot;all&quot;</span>, <span class="dv">1</span><span class="sc">:</span><span class="dv">9</span>, <span class="st">&quot;boot&quot;</span>),</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">jackknife.type =</span> <span class="fu">c</span>(<span class="st">&quot;nt+nr&quot;</span>, <span class="st">&quot;nt*nr&quot;</span>, <span class="st">&quot;nt=nr&quot;</span>),</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>       <span class="at">time.unit =</span> <span class="fu">c</span>(<span class="st">&quot;min&quot;</span>, <span class="st">&quot;h&quot;</span>), <span class="at">output.to.screen =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>       <span class="at">sim.data.out =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<div id="notes-on-function-arguments" class="section level3">
+<h3>Notes on function arguments</h3>
+<ol style="list-style-type: decimal">
+<li>Data input: <code>test</code>, <code>ref</code>, <code>path.in</code>, <code>file.in</code>
+<ul>
+<li>In the typical interactive use, <code>test</code> and <code>ref</code> are <em>data frames</em> with the time as the first column, and individual units for the rest of columns. In such cases, arguments <code>path.in</code> and <code>file.in</code> should not be used.</li>
+<li>Data can be read directly from an Excel file with extension <code>.xlsx</code> or <code>.xls</code>. In this case, data of test and reference should be stored in separate worksheets. The first column should be time, the rest columns are individual units. <em>The first row</em> is the column head indicating the names, such as ‘time,’ ‘unit 01,’ unit 02’, …. It doesn’t matter what the names are as columns will be renamed internally by the function. The important point is that <em>the first row will not be read, so do not put dissolution data on the first row</em>.</li>
+<li>When <code>path.in</code> and <code>file.in</code> are provided, the argument <code>test</code> and <code>ref</code> should be the <em>worksheet names inside quotation mark</em>, e.g., <code>&quot;lot ABCD1234 pH 6.8&quot;</code>.</li>
+<li><code>path.in</code> can be an absolute path such as<code>&quot;/home/myname/my.project/dat/&quot;</code>, or a relative path such as <code>&quot;../dat/&quot;</code> if the working directory is in the folder <code>&quot;/home/myname/my.project/analysis/&quot;</code> and the data file is in the folder <code>&quot;/home/myname/my.project/dat/&quot;</code>.</li>
+<li>One more note for Windows user: As Windows use “&quot; instead of”/&quot; to separate path, you have to either escape it by an additional &quot;&quot;, e.g., <code>&quot;C:\user\myname\my.project\dat\&quot;</code> <em>cannot</em> be the <code>path.in</code>, you have to changed it to <code>&quot;C:\\user\\myname\\my.project\\dat\\&quot;</code>, or to <code>&quot;C:/user/myname/my.project/dat/&quot;</code>, the same format as used in Linux system.</li>
+</ul></li>
+<li>Output: <code>path.out</code> and <code>file.out</code>, <code>output.to.screen</code>:
+<ul>
+<li>If argument <code>path.out</code> and <code>file.out</code> are not provided, but argument <code>print.report</code> is <code>TRUE</code>, then a plain text report will be generated automatically in the current working directory with file name <code>test_vs_ref_TZ_YYYY-MM-DD_HHMMSS.txt</code>, where <code>test</code> and <code>ref</code> are data set names of test and reference, <code>TZ</code> is the time zone such as CEST, <code>YYYY-MM-DD</code> is the numeric date format and <code>HHMMSS</code> is the numeric time format for hour, minute, and second.</li>
+<li>For a quick check, set argument <code>output.to.screen = TRUE</code>, a summary report very similar to concise style report will be printed on screen.</li>
+</ul></li>
+<li>Argument <code>jackknife.type</code>
+<ul>
+<li>For any sample with size <span class="math inline">\(n\)</span>, the jackknife estimator is obtained by estimating the parameter for each subsample omitting the <span class="math inline">\(i\)</span>th observation. However, when two samples (e.g., test and reference) are involved, there are several possible ways to do it. Assuming sample size of test and reference are <span class="math inline">\(n_\mathrm{T}\)</span> and <span class="math inline">\(n_\mathrm{R}\)</span>, the following three possibility are considered:
+<ul>
+<li>Estimated by removing one observation from both test and reference samples. In this case, the prerequisite is <span class="math inline">\(n_\mathrm{T} = n_\mathrm{R}\)</span>, denoted by <code>nt=nr</code> in the function. So if there are 12 units in test and reference data sets, there will be 12 jackknife estimators.</li>
+<li>Estimate the jackknife for test sample while keeping the reference data unchanged; and then estimate jackknife for reference sample while keeping the test sample unchanged. This is denoted by <code>nt+nr</code> in the function. This is the default method. So if there are 12 units in test and reference data sets, there will be <span class="math inline">\(12 + 12 = 24\)</span> jackknife estimators.</li>
+<li>For each observation deleted from test sample, estimate jackknife for reference sample. This is denoted by <code>nt*nr</code> in the function. So if there are 12 units in test and reference data sets, there will be <span class="math inline">\(12 \times 12 = 144\)</span> jackknife estimators.</li>
+</ul></li>
+</ul></li>
+<li>Arguments <code>f2.type</code> and <code>ci.type</code> are explained in the previous section.</li>
+<li>By default, the individual bootstrapped data set are not included in the output as those data sets are only useful for validation purpose. To include the individual data sets, set the argument <code>sim.data.out = TRUE</code>.</li>
+<li>Read the function manual <code>help(&quot;bootf2&quot;)</code> for more details of each argument.</li>
+</ol>
+</div>
+</div>
+<div id="examples" class="section level2">
+<h2>Examples</h2>
+<p>The minimum required arguments are <code>test</code> and <code>ref</code>. First, let’s simulate some dissolution profiles to play with.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># time points</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>tp <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">5</span>, <span class="dv">10</span>, <span class="dv">15</span>, <span class="dv">20</span>, <span class="dv">30</span>, <span class="dv">45</span>, <span class="dv">60</span>)</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="co"># model.par for reference with low variability</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>par.r <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">fmax =</span> <span class="dv">100</span>, <span class="at">fmax.cv =</span> <span class="dv">3</span>, <span class="at">mdt =</span> <span class="dv">15</span>, <span class="at">mdt.cv =</span> <span class="dv">14</span>, </span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>                  <span class="at">tlag =</span> <span class="dv">0</span>, <span class="at">tlag.cv =</span> <span class="dv">0</span>, <span class="at">beta =</span> <span class="fl">1.5</span>, <span class="at">beta.cv =</span> <span class="dv">8</span>)</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate reference data</span></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>dr <span class="ot">&lt;-</span> <span class="fu">sim.dp</span>(tp, <span class="at">model.par =</span> par.r, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a><span class="co"># model.par for test </span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>par.t <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">fmax =</span> <span class="dv">100</span>, <span class="at">fmax.cv =</span> <span class="dv">3</span>, <span class="at">mdt =</span> <span class="fl">12.29</span>, <span class="at">mdt.cv =</span> <span class="dv">12</span>,</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>                  <span class="at">tlag =</span> <span class="dv">0</span>, <span class="at">tlag.cv =</span> <span class="dv">0</span>, <span class="at">beta =</span> <span class="fl">1.727</span>, <span class="at">beta.cv =</span> <span class="dv">9</span>)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="co"># simulate test data with low variability</span></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a>dt <span class="ot">&lt;-</span> <span class="fu">sim.dp</span>(tp, <span class="at">model.par =</span> par.t, <span class="at">seed =</span> <span class="dv">100</span>, <span class="at">plot =</span> <span class="cn">FALSE</span>)</span></code></pre></div>
+<p>Use default setting for most arguments. To reduce the compilation time, bootstrap number is set to 100 only.</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co"># output file will be generated automatically</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="fu">bootf2</span>(dt<span class="sc">$</span>sim.disso, dr<span class="sc">$</span>sim.disso, <span class="at">n.boots =</span> <span class="dv">100</span>, <span class="at">print.report =</span> <span class="cn">FALSE</span>,</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">output.to.screen =</span> <span class="cn">TRUE</span>)</span></code></pre></div>
+<div id="refs" class="references csl-bib-body">
+<div id="ref-EMA-2018-09-QA.MSD.DISSO" class="csl-entry">
+<div class="csl-left-margin">(1) </div><div class="csl-right-inline">European Medicines Agency. Question and answer on the adequacy of the <span>Mahalanobis</span> distance to assess the comparability of drug dissolution profiles <a href="https://www.ema.europa.eu/en/documents/scientific-guideline/question-answer-adequacy-mahalanobis-distance-assess-comparability-drug-dissolution-profiles_en.pdf">https://www.ema.europa.eu/en/documents/scientific-guideline/question-answer-adequacy-mahalanobis-distance-assess-comparability-drug-dissolution-profiles_en.pdf</a> (accessed 2018 -12 -04).</div>
+</div>
+<div id="ref-Davit-2013-03-BA" class="csl-entry">
+<div class="csl-left-margin">(2) </div><div class="csl-right-inline">Davit, B. M.; Stier, E.; Jiang, X.; Anand, O. Expectations of the <span>US-FDA</span> Regarding Dissolution Data in Generic Drug Regulatory Submissions. <em>Biopharma Asia</em> <strong>2013</strong>, <em>2</em> (2).</div>
+</div>
+<div id="ref-Lum-2019-05-WS" class="csl-entry">
+<div class="csl-left-margin">(3) </div><div class="csl-right-inline">Lum, S. Health <span>Canada</span>’s Current Practice and Challenges in the Evaluation of Dissolution Profile Comparisons in Support of Minor/Moderate Product Quality Changes: Case Studies. In <em>In vitro dissolution profiles similarity assessment in support of drug product quality: What, how, and when</em>; 2019.</div>
+</div>
+<div id="ref-Mandula-2019-05-WS" class="csl-entry">
+<div class="csl-left-margin">(4) </div><div class="csl-right-inline">Mandula, H. Rational Statistical Analysis Practice in Dissolution Profile Comparison: <span>FDA</span> Perspective. In <em>In vitro dissolution profiles similarity assessment in support of drug product quality: What, how, and when</em>; 2019.</div>
+</div>
+<div id="ref-Shah-1998-06-PR" class="csl-entry">
+<div class="csl-left-margin">(5) </div><div class="csl-right-inline">Shah, V. P.; Tsong, Y.; Sathe, P.; Liu, J.-P. In Vitro Dissolution Profile Comparison—Statistics and Analysis of the Similarity Factor, F2. <em>Pharmaceutical Research</em> <strong>1998</strong>, <em>15</em> (6), 889–896. <a href="https://doi.org/10.1023/A:1011976615750">https://doi.org/10.1023/A:1011976615750</a>.</div>
+</div>
+<div id="ref-Ma-2000-05-JBS" class="csl-entry">
+<div class="csl-left-margin">(6) </div><div class="csl-right-inline">Ma, M.-C.; Wang, B. B. C.; Liu, J.-P.; Tsong, Y. Assessment of Similarity Between Dissolution Profiles. <em>Journal of Biopharmaceutical Statistics</em> <strong>2000</strong>, <em>10</em> (2), 229–249. <a href="https://doi.org/10.1081/BIP-100101024">https://doi.org/10.1081/BIP-100101024</a>.</div>
+</div>
+<div id="ref-Mendyk-2013-02-DT" class="csl-entry">
+<div class="csl-left-margin">(7) </div><div class="csl-right-inline">Mendyk, A.; Pacławski, A.; Szlek, J.; Jachowicz, R. <span class="nocase">PhEq<span></span>bootstrap</span>: Open-Source Software for the Simulation of <span class="math inline">\(f_2\)</span> Distribution in Cases of Large Variability in Dissolution Profiles. <em>Dissolution Technologies</em> <strong>2013</strong>, <em>20</em> (1), 13–17. <a href="https://doi.org/10.14227/DT200113P13">https://doi.org/10.14227/DT200113P13</a>.</div>
+</div>
+<div id="ref-Mendyk-2019" class="csl-entry">
+<div class="csl-left-margin">(8) </div><div class="csl-right-inline">Mendyk, A. <span class="nocase">bootf2BCA</span> <a href="https://sourceforge.net/projects/bootf2bca/files/bootf2BCA_v1.2/">https://sourceforge.net/projects/bootf2bca/files/bootf2BCA_v1.2/</a> (accessed 2021 -02 -03).</div>
+</div>
+<div id="ref-Davison-1997-Bootstrap" class="csl-entry">
+<div class="csl-left-margin">(9) </div><div class="csl-right-inline">Davison, A. C.; Hinkley, D. V. <em>Bootstrap Methods and Their Application</em>; Cambridge University Press, 1997.</div>
+</div>
+<div id="ref-Hyndman-1996-AS" class="csl-entry">
+<div class="csl-left-margin">(10) </div><div class="csl-right-inline">Hyndman, R. J.; Fan, Y. Sample Quantiles in Statistical Packages. <em>The American Statistician</em> <strong>1996</strong>, <em>50</em> (4), 361–365. <a href="https://doi.org/10.1080/00031305.1996.10473566">https://doi.org/10.1080/00031305.1996.10473566</a>.</div>
+</div>
+<div id="ref-Efron1993AIttB" class="csl-entry">
+<div class="csl-left-margin">(11) </div><div class="csl-right-inline">Efron, B.; Tibshirani, R. <em>An Introduction to the Bootstrap</em>; Chapman &amp; Hall, 1993.</div>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>
