@@ -1,8 +1,8 @@
 Package: bootf2
 Type: Package
 Title: Simulation and Comparison of Dissolution Profiles
-Version: 0.4.0
-Date: 2021-08-17
+Version: 0.4.1
+Date: 2021-08-19
 Authors@R: person(given = "Zhengguo",
                   family = "Xu",
                   role = c("aut", "cre"),
@@ -25,8 +25,8 @@ Suggests: testthat (>= 3.0.0), knitr, rmarkdown
 VignetteBuilder: knitr
 Config/testthat/edition: 3
 NeedsCompilation: no
-Packaged: 2021-08-17 17:38:50 UTC; zhengguo
+Packaged: 2021-08-19 15:04:06 UTC; zhengguo
 Author: Zhengguo Xu [aut, cre]
 Maintainer: Zhengguo Xu <zhengguoxu@gmail.com>
 Repository: CRAN
-Date/Publication: 2021-08-18 07:50:12 UTC
+Date/Publication: 2021-08-25 12:50:22 UTC

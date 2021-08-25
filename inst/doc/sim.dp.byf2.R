@@ -29,7 +29,7 @@ dref <- sim.dp(tp, model.par = par.r, seed = 100)
 
 ## ----simdpbyf2-f2-50a---------------------------------------------------------
 df2_50_a <- sim.dp.byf2(sim.dp.out = dref, target.f2 = 50, seed = 123,
-                        message = TRUE)
+                        message = TRUE, plot = FALSE)
 
 ## ----simdpbyf2-f2-50a1--------------------------------------------------------
 format(df2_50_a$model.par$f2 - 50, scientific = FALSE)

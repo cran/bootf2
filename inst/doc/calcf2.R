@@ -46,7 +46,7 @@ t_vs_r_who <- calcf2(dt1.lv$sim.disso, dr1.lv$sim.disso,
 
 ## ----calcf2-cvok01-c----------------------------------------------------------
 t_vs_r <- calcf2(dt1.lv$sim.disso, dr1.lv$sim.disso, regulation = "FDA",
-                 both.TR.85 = TRUE, message = TRUE)
+                 both.TR.85 = TRUE, message = TRUE, plot = FALSE)
 
 ## ----calcf2-cvko-dat----------------------------------------------------------
 # model.par for reference with high variability
